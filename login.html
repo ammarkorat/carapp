@@ -158,6 +158,12 @@
                 return;
             }
 
+            // Check if the email is 'admin@gmail.com' and the password is '123'
+            if (email === 'admin@gmail.com' && password === '123') {
+                window.location.href = 'admin.html';
+                return;
+            }
+
             // Check if the email exists in localStorage (previously signed up)
             const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
             const user = storedUsers.find(user => user.email === email && user.password === password);
