@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Enthusiasts Forum</title>
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #eaeff4;
+        }
+
+        header {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            transition: background-color 0.3s;
+        }
+
+        header.dark-mode {
+            background-color: #3700b3;
+        }
+
+        nav {
+            background-color: #002438;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        nav.dark-mode {
+            background-color: #3700b3;
+        }
+
+        nav .nav-item {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        nav .nav-item:hover {
+            color: #FF6347;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        button {
+            background-color: #00509E;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #FF6347;
+        }
+
+        footer {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            transition: background-color 0.3s;
+        }
+
+        footer.dark-mode {
+            background-color: #333;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-btn.dark-mode {
+            background-color: #3700b3;
+        }
+
+        .toggle-btn:hover {
+            background-color: #3700b3;
+        }
+
+        /* Post Feed Section */
+        .post {
+            background: white;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .post.dark-mode {
+            background-color: #333;
+            color: #eaeff4;
+        }
+
+        .post img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .like-btn, .share-btn {
+            background-color: #00509E;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .like-btn.liked {
+            background-color: #FF6347;
+        }
+
+        .comment-section {
+            margin-top: 20px;
+        }
+
+        .comment-section input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .comments-list {
+            margin-top: 10px;
+        }
+
+        /* Hide loading text initially */
+        #loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            font-size: 1.2rem;
+            background-color: #ffcc00;
+            border-radius: 5px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Car Enthusiasts Forum</h1>
+</header>
+
+<nav>
+    <a href="index.html" class="nav-item">Home</a>
+    <a href="news.html" class="nav-item">Car News</a>
+    <a href="meets.html" class="nav-item">Car Meets</a>
+    <a href="content.html" class="nav-item">Car Content</a>
+</nav>
+
+<main>
+    <div class="button-container">
+        <button onclick="redirectToCreatePost()">Create Post</button>
+    </div>
+    
+    <div id="loading">Loading posts...</div>
+    <div id="posts-section" class="section"></div>
+</main>
+
+<footer>
+    <p>© 2024 Ammar's Car Forum</p>
+</footer>
+
+<button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+<script>
+    // Simulate a logged-in user (replace with actual login logic)
+    let loggedIn = localStorage.getItem('loggedIn') === 'true';
+
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const header = document.querySelector('header');
+        const nav = document.querySelector('nav');
+        const posts = document.querySelectorAll('.post');
+        const footer = document.querySelector('footer');
+        const toggleButton = document.querySelector('.toggle-btn');
+
+        header.classList.toggle('dark-mode');
+        nav.classList.toggle('dark-mode');
+        footer.classList.toggle('dark-mode');
+        posts.forEach(post => post.classList.toggle('dark-mode'));
+
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('darkMode', 'enabled');
+            toggleButton.textContent = 'Toggle to Light Mode';
+            toggleButton.classList.add('dark-mode');
+        } else {
+            localStorage.setItem('darkMode', 'disabled');
+            toggleButton.textContent = 'Toggle to Dark Mode';
+            toggleButton.classList.remove('dark-mode');
+        }
+    }
+
+    // Check for dark mode preference on load
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+
+    // Redirect to create post page
+    function redirectToCreatePost() {
+        if (!loggedIn) {
+            alert('You need to log in to post!');
+            return;
+        }
+        window.location.href = 'create-post.html'; // Redirect to the create post page
+    }
+
+    // Function to fetch and display posts
+    function fetchPosts() {
+        const postsSection = document.getElementById('posts-section');
+        const loading = document.getElementById('loading');
+        loading.style.display = 'block';
+
+        setTimeout(() => {
+            loading.style.display = 'none';
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            if (posts.length === 0) {
+                postsSection.innerHTML = '<p>No posts available.</p>';
+                return;
+            }
+
+            posts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.classList.add('post');
+                postDiv.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p><strong>Posted by:</strong> ${post.author}</p>
+                    <p><strong>Posted on:</strong> ${new Date(post.timestamp).toLocaleString()}</p>
+                    <img src="${post.imageURL}" alt="${post.title}" />
+                    <div class="actions">
+                        <button class="like-btn">Like</button>
+                        <button class="share-btn">Share</button>
+                    </div>
+                    <div class="comment-section">
+                        <input type="text" placeholder="Add a comment...">
+                        <div class="comments-list"></div>
+                    </div>
+                `;
+                postsSection.appendChild(postDiv);
+            });
+        }, 1000);
+    }
+
+    // Fetch posts on page load
+    fetchPosts();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #eaeff4;
+        }
+
+        header {
+            background-color: #002438;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        header.dark-mode {
+            background-color: #3700b3;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 10px;
+            background-color: #002438;
+            transition: background-color 0.3s;
+        }
+
+        nav.dark-mode {
+            background-color: #3700b3;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: #1a1a4f;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .container.dark-mode {
+            background-color: #333;
+            color: #eaeff4;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #002438;
+            margin-bottom: 10px;
+        }
+
+        .section h3.dark-mode {
+            color: #eaeff4;
+        }
+
+        textarea, button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            background-color: #002438;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1a1a4f;
+        }
+
+        button.dark-mode {
+            background-color: #3700b3;
+            color: #eaeff4;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-btn.dark-mode {
+            background-color: #3700b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Settings</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="news.html">News</a>
+        <a href="settings.html">Settings</a>
+    </nav>
+    <div class="container">
+        <div class="section">
+            <h3>Profile</h3>
+        </div>
+
+        <div class="section">
+            <h3>Report Issue</h3>
+            <form id="reportForm">
+                <textarea id="reportContent" placeholder="Describe your issue here..." required></textarea>
+                <button type="submit">Submit Report</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h3>About Us</h3>
+            <p>Ammar's Car App is your ultimate destination for car news, events, and exclusive content!</p>
+        </div>
+
+        <div class="section">
+            <h3>Change Password</h3>
+            <button onclick="changePassword()">Change Password</button>
+        </div>
+
+        <div class="section">
+            <button class="btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        // Apply the saved mode on page load
+        window.onload = function () {
+            const mode = localStorage.getItem('mode');
+            if (mode === 'dark') {
+                enableDarkMode();
+            }
+        };
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            if (document.body.classList.contains('dark-mode')) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        }
+
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            document.querySelector('header').classList.add('dark-mode');
+            document.querySelector('nav').classList.add('dark-mode');
+            document.querySelector('.container').classList.add('dark-mode');
+            document.querySelectorAll('h3').forEach(h3 => h3.classList.add('dark-mode'));
+            document.querySelector('.toggle-btn').classList.add('dark-mode');
+            document.querySelectorAll('button').forEach(btn => btn.classList.add('dark-mode'));
+            localStorage.setItem('mode', 'dark');
+        }
+
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            document.querySelector('header').classList.remove('dark-mode');
+            document.querySelector('nav').classList.remove('dark-mode');
+            document.querySelector('.container').classList.remove('dark-mode');
+            document.querySelectorAll('h3').forEach(h3 => h3.classList.remove('dark-mode'));
+            document.querySelector('.toggle-btn').classList.remove('dark-mode');
+            document.querySelectorAll('button').forEach(btn => btn.classList.remove('dark-mode'));
+            localStorage.setItem('mode', 'light');
+        }
+
+        // Report form submission
+        document.getElementById('reportForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission (page reload)
+
+            const reportContent = document.getElementById('reportContent').value;
+            const reportDate = new Date().toLocaleString(); // Add the current date and time
+
+            const newReport = {
+                content: reportContent,
+                date: reportDate
+            };
+
+            // Get existing reports from localStorage or create an empty array if none exist
+            const reports = JSON.parse(localStorage.getItem('reports')) || [];
+            reports.push(newReport);
+
+            // Save updated reports back to localStorage
+            localStorage.setItem('reports', JSON.stringify(reports));
+
+            // Show an alert and reset the form
+            alert('Thank you for your feedback!');
+            document.getElementById('reportForm').reset();
+        });
+
+        function changePassword() {
+            alert('Password change functionality coming soon!');
+        }
+
+        function logout() {
+            alert('You have been logged out.');
+            localStorage.removeItem('username');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

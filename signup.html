@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        /* Styling remains unchanged */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #eaeff4;
+            flex-direction: column;
+        }
+
+        header {
+            font-size: 32px;
+            color: #eaeff4;
+            padding: 20px;
+            background-color: #333;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            background-color: #1f1f1f;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            width: 80%;
+            height: 80vh;
+        }
+
+        .signup-container {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #eaeff4;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #333;
+            color: #eaeff4;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .login-button {
+            background-color: transparent;
+            border: none;
+            color: #6200ea;
+            font-size: 14px;
+            margin-top: 15px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            color: #3700b3;
+        }
+
+        .image-section {
+            width: 50%;
+            background: url('your-image-path-here.jpg') no-repeat center center;
+            background-size: contain;
+            background-position: center center;
+            height: 100%;
+        }
+
+        .success-message {
+            color: green;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>Ammar's Car App</header>
+    <div class="container">
+        <div class="signup-container">
+            <h2>Signup</h2>
+            <div id="error-message" class="error-message"></div>
+            <div id="success-message" class="success-message"></div>
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+            <button onclick="signup()">Create Account</button>
+            <button class="login-button" onclick="goToLogin()">Already have an account? Login</button>
+        </div>
+        <div class="image-section"></div>
+    </div>
+
+    <script>
+        function signup() {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+
+            // Clear previous messages
+            errorMessage.textContent = '';
+            successMessage.textContent = '';
+
+            // Validation
+            if (username.length < 3) {
+                errorMessage.textContent = 'Username must be at least 3 characters long.';
+                return;
+            }
+            if (!email.includes('@')) {
+                errorMessage.textContent = 'Please enter a valid email address.';
+                return;
+            }
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                errorMessage.textContent =
+                    'Password must be at least 8 characters long and include an uppercase letter, a number, and a special character.';
+                return;
+            }
+            if (password !== confirmPassword) {
+                errorMessage.textContent = 'Passwords do not match.';
+                return;
+            }
+
+            // Save user info to localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            if (users.some(user => user.email === email)) {
+                errorMessage.textContent = 'Email already exists.';
+                return;
+            }
+            if (users.some(user => user.username.toLowerCase() === username.toLowerCase())) {
+                errorMessage.textContent = 'Username already exists.';
+                return;
+            }
+
+            // Store user data (consider password hashing in production)
+            const token = Math.random().toString(36).substr(2); // Random token for demonstration
+            users.push({ username, email, password, token });
+            localStorage.setItem('users', JSON.stringify(users));
+
+            successMessage.textContent = 'Account created successfully! You can now log in.';
+            // Clear form inputs after successful signup
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirmPassword').value = '';
+
+            // Redirect to login page after 3 seconds
+            setTimeout(function () {
+                window.location.href = 'login.html';
+            }, 3000);
+        }
+
+        function goToLogin() {
+            window.location.href = 'login.html'; // Redirect to login page
+        }
+    </script>
+</body>
+</html>

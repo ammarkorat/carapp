@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ammar's Car App - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #eaeff4;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 20px 10%;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+
+        header.dark-mode {
+            background-color: #3700b3;
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: white;
+            font-size: 1.2em;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #004d99;
+            transform: scale(1.05);
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
+        .profile-container img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .profile-container span {
+            font-size: 1.2em;
+            color: white;
+        }
+
+        .hero {
+            background-image: url('your-hero-image.jpg'); /* Add your car image URL here */
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            border-radius: 15px;
+            margin-top: 100px;
+        }
+
+        .hero h2 {
+            font-size: 3.5em;
+            font-weight: 600;
+        }
+
+        .cta-button {
+            background-color: #6200ea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            background-color: #3700b3;
+        }
+
+        main {
+            padding: 40px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+
+        .featured-cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 30%;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card.dark-mode {
+            background-color: #333;
+            color: #eaeff4;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.6em;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .card p {
+            font-size: 1.1em;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        footer {
+            background-color: #003366;
+            color: white;
+            padding: 30px 10%;
+            text-align: center;
+            margin-top: 40px;
+            border-radius: 15px;
+            transition: background-color 0.3s;
+        }
+
+        footer.dark-mode {
+            background-color: #333;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #6200ea;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 100;
+        }
+
+        .toggle-btn.dark-mode {
+            background-color: #3700b3;
+        }
+
+        .toggle-btn:hover {
+            background-color: #3700b3;
+        }
+
+        @media screen and (max-width: 768px) {
+            .hero {
+                height: 250px;
+            }
+
+            .featured-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 80%;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ammar's Car App</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="news.html">Car News</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+    </header>
+
+    <!-- Profile Section -->
+    <div id="profile-section" class="profile-container" style="display: none;">
+        <img src="profile-icon.png" alt="Profile Icon"> <!-- Replace with your profile icon -->
+        <span id="username"></span>
+    </div>
+
+    <div class="hero">
+        <div>
+            <h2>Welcome to Ammar's Car App!</h2>
+            <button class="cta-button">Explore Latest News</button>
+        </div>
+    </div>
+
+    <main>
+        <div class="section-title">
+            <h2>Featured Sections</h2>
+        </div>
+        
+        <div class="featured-cards">
+            <div class="card">
+                <img src="news-image.jpg" alt="Latest Car News">
+                <h3>Latest Car News</h3>
+                <p>Stay updated with the latest in the car world, from launches to reviews!</p>
+            </div>
+            <div class="card">
+                <img src="meet-image.jpg" alt="Upcoming Car Meets">
+                <h3>Upcoming Car Meets</h3>
+                <p>Discover car events and gatherings near you.</p>
+            </div>
+            <div class="card">
+                <img src="content-image.jpg" alt="Exclusive Car Content">
+                <h3>Exclusive Car Content</h3>
+                <p>Explore in-depth reviews, tutorials, and videos about your favorite cars.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 Ammar's Car App. All rights reserved.</p>
+        <div>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </footer>
+
+    <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+<script>
+    // Function to get the value of a cookie by name
+    function getCookie(name) {
+        let cookieArray = document.cookie.split(';');
+        for (let i = 0; i < cookieArray.length; i++) {
+            let cookie = cookieArray[i].trim();
+            if (cookie.startsWith(name + "=")) {
+                return cookie.substring(name.length + 1);
+            }
+        }
+        return null; // Return null if not found
+    }
+
+    // Check if the username cookie exists
+    const username = getCookie('username');
+    const profileSection = document.getElementById('profile-section');
+    const usernameElement = document.getElementById('username');
+
+    console.log("Cookie value for 'username':", username); // Log the cookie value for debugging
+
+    if (username) {
+        // Display the profile section with the username
+        profileSection.style.display = 'flex';
+        usernameElement.textContent = `Welcome, ${username}`;
+    } else {
+        // Log when redirecting due to no username cookie
+        console.log("No username cookie found, redirecting to login...");
+        setTimeout(() => {
+            window.location.href = 'login.html'; // Redirect to login page after 3 seconds
+        }, 3000);
+    }
+
+    // Dark mode toggle functions
+    window.onload = function () {
+        const mode = localStorage.getItem('mode');
+        if (mode === 'dark') {
+            enableDarkMode();
+        }
+    };
+
+    function toggleDarkMode() {
+        if (document.body.classList.contains('dark-mode')) {
+            disableDarkMode();
+        } else {
+            enableDarkMode();
+        }
+    }
+
+    function enableDarkMode() {
+        document.body.classList.add('dark-mode');
+        document.querySelector('header').classList.add('dark-mode');
+        document.querySelectorAll('.card').forEach(card => card.classList.add('dark-mode'));
+        document.querySelector('footer').classList.add('dark-mode');
+        document.querySelector('.toggle-btn').textContent = 'Toggle Light Mode';
+        document.querySelector('.toggle-btn').classList.add('dark-mode');
+        localStorage.setItem('mode', 'dark');
+    }
+
+    function disableDarkMode() {
+        document.body.classList.remove('dark-mode');
+        document.querySelector('header').classList.remove('dark-mode');
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('dark-mode'));
+        document.querySelector('footer').classList.remove('dark-mode');
+        document.querySelector('.toggle-btn').textContent = 'Toggle Dark Mode';
+        document.querySelector('.toggle-btn').classList.remove('dark-mode');
+        localStorage.setItem('mode', 'light');
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Ammar's Car App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+            padding: 0 10%;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #eaeff4;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+            transition: background-color 0.3s;
+        }
+
+        header.dark-mode {
+            background-color: #3700b3;
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: 600;
+            margin-top: 30px;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style-type: none;
+        }
+
+        ul li {
+            margin-bottom: 15px;
+        }
+
+        footer {
+            background-color: #003366;
+            color: white;
+            padding: 30px 10%;
+            text-align: center;
+            margin-top: 40px;
+            border-radius: 15px;
+            transition: background-color 0.3s;
+        }
+
+        footer.dark-mode {
+            background-color: #333;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #6200ea;
+        }
+
+        .back-btn, .toggle-btn {
+            position: fixed;
+            top: 20px;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-btn {
+            left: 20px;
+            background-color: #003366;
+        }
+
+        .toggle-btn {
+            right: 20px;
+            background-color: #6200ea;
+        }
+
+        .back-btn:hover {
+            background-color: #00509e;
+        }
+
+        .toggle-btn:hover {
+            background-color: #3700b3;
+        }
+
+        .toggle-btn.dark-mode, .back-btn.dark-mode {
+            background-color: #3700b3;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Buttons -->
+<a href="index.html" class="back-btn">Back to Home</a>
+<button class="toggle-btn" onclick="toggleDarkMode()">Toggle to Dark Mode</button>
+
+<header>
+    <h1>Ammar's Car App</h1>
+</header>
+
+<main>
+    <section>
+        <h2>Privacy Policy</h2>
+        <p>At Ammar's Car App, we take your privacy seriously. This Privacy Policy outlines how we collect, use, and protect your information when you visit our website, especially in relation to accessing car news and related content.</p>
+
+        <h3>Information We Collect</h3>
+        <p>We collect minimal personal information for the purpose of improving your experience and offering relevant content. The data we may collect includes:</p>
+        <ul>
+            <li><strong>Browsing Data:</strong> We collect non-personally identifiable data such as your IP address, browser type, and the pages you visit.</li>
+            <li><strong>Cookies:</strong> We use cookies to enhance the user experience by remembering your preferences, such as dark mode or language settings.</li>
+            <li><strong>Newsletter Subscription (If applicable in the future):</strong> If you subscribe to our newsletter, we will collect your email address to send you updates on car news and articles.</li>
+        </ul>
+
+        <h3>How We Use Your Information</h3>
+        <p>The information we collect is used to:</p>
+        <ul>
+            <li>Provide a personalized user experience on the website.</li>
+            <li>Analyze website traffic and improve site performance.</li>
+            <li>Notify you of important updates or changes to the website (if you subscribe to a future newsletter).</li>
+        </ul>
+
+        <h3>Data Security</h3>
+        <p>We implement various security measures to protect your personal information. However, please note that no method of data transmission over the internet is completely secure. While we strive to protect your data, we cannot guarantee its absolute security.</p>
+
+        <h3>Third-Party Services</h3>
+        <p>We do not share your personal data with third parties. However, we may use third-party analytics tools like Google Analytics to analyze website usage, which might collect anonymous browsing data.</p>
+
+        <h3>Your Rights</h3>
+        <p>You have the right to:</p>
+        <ul>
+            <li>Request access to the data we hold about you.</li>
+            <li>Request the correction or deletion of your data (where applicable).</li>
+            <li>Opt-out of cookies by adjusting your browser settings.</li>
+        </ul>
+
+        <h3>Changes to This Privacy Policy</h3>
+        <p>We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. Any changes will be posted on this page with an updated revision date.</p>
+
+        <h3>Contact Us</h3>
+        <p>If you have any questions about this Privacy Policy or our data practices, please contact us at <a href="mailto:support@ammarscarapp.com">support@ammarscarapp.com</a>.</p>
+    </section>
+</main>
+
+<footer>
+    <p>© 2024 Ammar's Car App. All rights reserved.</p>
+    <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Us</a>
+    </div>
+</footer>
+
+<script>
+    // Apply the saved mode on page load
+    window.onload = function () {
+        const mode = localStorage.getItem('mode');
+        if (mode === 'dark') {
+            enableDarkMode();
+        }
+    };
+
+    function toggleDarkMode() {
+        if (document.body.classList.contains('dark-mode')) {
+            disableDarkMode();
+        } else {
+            enableDarkMode();
+        }
+    }
+
+    function enableDarkMode() {
+        document.body.classList.add('dark-mode');
+        document.querySelector('header').classList.add('dark-mode');
+        document.querySelector('footer').classList.add('dark-mode');
+        document.querySelector('.toggle-btn').textContent = 'Toggle to Light Mode';
+        document.querySelector('.toggle-btn').classList.add('dark-mode');
+        document.querySelector('.back-btn').classList.add('dark-mode');
+        localStorage.setItem('mode', 'dark');
+    }
+
+    function disableDarkMode() {
+        document.body.classList.remove('dark-mode');
+        document.querySelector('header').classList.remove('dark-mode');
+        document.querySelector('footer').classList.remove('dark-mode');
+        document.querySelector('.toggle-btn').textContent = 'Toggle to Dark Mode';
+        document.querySelector('.toggle-btn').classList.remove('dark-mode');
+        document.querySelector('.back-btn').classList.remove('dark-mode');
+        localStorage.setItem('mode', 'light');
+    }
+</script>
+
+</body>
+</html>

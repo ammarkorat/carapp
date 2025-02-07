@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post - Car Enthusiasts Forum</title>
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #eaeff4;
+        }
+
+        header {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            transition: background-color 0.3s;
+        }
+
+        header.dark-mode {
+            background-color: #3700b3;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .form-container.dark-mode {
+            background-color: #333;
+            color: #eaeff4;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #00509E;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #FF6347;
+        }
+
+        footer {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            transition: background-color 0.3s;
+        }
+
+        footer.dark-mode {
+            background-color: #333;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-btn.dark-mode {
+            background-color: #3700b3;
+        }
+
+        .toggle-btn:hover {
+            background-color: #3700b3;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Create a New Post</h1>
+</header>
+
+<div class="form-container">
+    <label for="title">Post Title</label>
+    <input type="text" id="title" placeholder="Enter post title" required>
+
+    <label for="image">Upload Image/Video</label>
+    <input type="file" id="image" accept="image/*, video/*" required>
+
+    <button onclick="createPost()">Create Post</button>
+</div>
+
+<footer>
+    <p>© 2024 Ammar's Car Forum</p>
+</footer>
+
+<button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+<script>
+    // Simulate a logged-in user (replace with actual login logic)
+    let loggedIn = localStorage.getItem('loggedIn') === 'true';
+
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const formContainer = document.querySelector('.form-container');
+        const footer = document.querySelector('footer');
+        const toggleButton = document.querySelector('.toggle-btn');
+
+        formContainer.classList.toggle('dark-mode');
+        footer.classList.toggle('dark-mode');
+
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('darkMode', 'enabled');
+            toggleButton.textContent = 'Toggle to Light Mode';
+            toggleButton.classList.add('dark-mode');
+        } else {
+            localStorage.setItem('darkMode', 'disabled');
+            toggleButton.textContent = 'Toggle to Dark Mode';
+            toggleButton.classList.remove('dark-mode');
+        }
+    }
+
+    // Check for dark mode preference on load
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    });
+
+    // Function to create a new post
+    function createPost() {
+        if (!loggedIn) {
+            alert('You need to log in to create a post!');
+            return;
+        }
+
+        const title = document.getElementById('title').value;
+        const imageFile = document.getElementById('image').files[0];
+
+        if (!title || !imageFile) {
+            alert('Please fill in both the title and upload an image/video.');
+            return;
+        }
+
+        // Create a new post object
+        const post = {
+            title: title,
+            author: 'User', // Replace this with the actual logged-in user's name
+            imageURL: URL.createObjectURL(imageFile),
+            timestamp: new Date().toISOString()
+        };
+
+        // Save the new post to localStorage
+        let posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.push(post);
+        localStorage.setItem('posts', JSON.stringify(posts));
+
+        // Redirect back to the forum page
+        window.location.href = 'forum.html';
+    }
+</script>
+
+</body>
+</html>

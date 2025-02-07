@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ammar News - Car Enthusiasts</title>
+<style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #eaeff4;
+        }
+
+        header {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            transition: background-color 0.3s;
+        }
+
+        header.dark-mode {
+            background-color: #3700b3;
+        }
+
+        nav {
+            background-color: #002438;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        nav.dark-mode {
+            background-color: #3700b3;
+        }
+
+        nav .nav-item {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        nav .nav-item:hover {
+            color: #FF6347;
+        }
+
+        nav.dark-mode .nav-item:hover {
+            color: #bb86fc;
+        }
+
+        .section {
+            margin: 20px;
+        }
+
+        .post {
+            background: white;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .post.dark-mode {
+            background-color: #333;
+            color: #eaeff4;
+        }
+
+        .post img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        footer {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            transition: background-color 0.3s;
+        }
+
+        footer.dark-mode {
+            background-color: #333;
+        }
+
+        #loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            font-size: 1.2rem;
+            background-color: #ffcc00;
+            border-radius: 5px;
+            color: #333;
+        }
+    </style>
+
+    <script>
+        // Immediately apply dark mode class if saved in localStorage
+        if (localStorage.getItem('mode') === 'dark') {
+            document.documentElement.classList.add('dark-mode'); // Apply to root HTML element
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>Ammar News - Car Enthusiasts</h1>
+</header>
+
+<nav>
+    <a href="index.html" class="nav-item">Home</a>
+    <a href="news.html" class="nav-item">Car News</a>
+    <a href="settings.html" class="nav-item">Settings</a>
+</nav>
+
+<main>
+    <div id="loading">Loading News...</div>
+    <div id="super-cars" class="section"></div>
+</main>
+
+<footer>
+    <p>© 2024 Ammar's Car App</p>
+</footer>
+
+<script>
+    // Apply saved mode on load
+    window.onload = function () {
+        if (localStorage.getItem('mode') === 'dark') {
+            enableDarkMode();
+        }
+        fetchNews();
+    };
+
+    // Enable dark mode function
+    function enableDarkMode() {
+        document.body.classList.add('dark-mode');
+        document.querySelector('header').classList.add('dark-mode');
+        document.querySelector('nav').classList.add('dark-mode');
+        document.querySelectorAll('.post').forEach(post => post.classList.add('dark-mode'));
+        document.querySelector('footer').classList.add('dark-mode');
+    }
+
+    // Apply dark mode to new posts
+    function applyDarkModeToPosts() {
+        if (localStorage.getItem('mode') === 'dark') {
+            document.querySelectorAll('.post').forEach(post => {
+                post.classList.add('dark-mode');
+            });
+        }
+    }
+
+    // Fetch and display news posts
+    function fetchNews() {
+        const newsSection = document.getElementById('super-cars');
+        const loading = document.getElementById('loading');
+        loading.style.display = 'block';
+
+        setTimeout(() => {
+            loading.style.display = 'none';
+            const news = JSON.parse(localStorage.getItem('news')) || [];
+            if (news.length === 0) {
+                newsSection.innerHTML = '<p>No news available.</p>';
+                return;
+            }
+
+            news.forEach(newsItem => {
+                const post = document.createElement('div');
+                post.classList.add('post');
+                post.innerHTML = `
+                    <h2>${newsItem.title}</h2>
+                    <p>${newsItem.content}</p>
+                    <img src="${newsItem.imageURL}" alt="${newsItem.title}" />
+                    <p><em>${new Date(newsItem.date).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</em></p>
+                `;
+                newsSection.appendChild(post);
+            });
+
+            // Apply dark mode to the newly added posts
+            applyDarkModeToPosts();
+        }, 1000);
+
+function timeAgo(dateString) {
+    const date = new Date(Date.parse(dateString)); // Parse custom format
+    if (isNaN(date)) {
+        console.error("Invalid date format:", dateString);
+        return "Invalid date";
+    }
+
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+
+    const intervals = {
+        year: 31536000,
+        month: 2592000,
+        day: 86400,
+        hour: 3600,
+        minute: 60,
+        second: 1,
+    };
+
+    for (let key in intervals) {
+        const value = Math.floor(seconds / intervals[key]);
+        if (value > 0) {
+            return `${value} ${key}${value > 1 ? 's' : ''} ago`;
+        }
+    }
+
+    return "just now";
+}
+
+    }
+</script>
+
+</body>
+</html>

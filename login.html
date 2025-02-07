@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #eaeff4; /* Light text color for dark mode */
+            flex-direction: column;
+        }
+
+        header {
+            font-size: 32px;
+            color: #eaeff4;
+            padding: 20px;
+            background-color: #333;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            background-color: #1f1f1f; /* Dark background for the container */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            width: 90%;
+            height: 80vh;
+            max-width: 800px;
+        }
+
+        .login-container {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #eaeff4;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #333;
+            color: #eaeff4;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .signup-button {
+            background-color: transparent;
+            border: none;
+            color: #6200ea;
+            font-size: 14px;
+            margin-top: 15px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .signup-button:hover {
+            color: #3700b3;
+        }
+
+        .image-section {
+            width: 50%;
+            background: url('your-image-path-here.jpg') no-repeat center center; 
+            background-size: contain;
+            background-position: center;
+            height: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .image-section {
+                width: 100%;
+                height: 250px; 
+            }
+            header {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>Ammar's Car App</header>
+    <div class="container">
+        <div class="login-container">
+            <h2>Login</h2>
+            <div id="error-message" class="error"></div>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button onclick="login()">Login</button>
+            <button class="signup-button" onclick="goToSignup()">Don't have an account? Sign up</button>
+        </div>
+        <div class="image-section"></div>
+    </div>
+
+    <script>
+        function login() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            // Clear previous error
+            errorMessage.textContent = '';
+
+            // Validate email format
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!email || !password) {
+                errorMessage.textContent = 'Please fill in both fields.';
+                return;
+            }
+            if (!emailRegex.test(email)) {
+                errorMessage.textContent = 'Please enter a valid email address.';
+                return;
+            }
+
+            // Check if the email exists in localStorage (previously signed up)
+            const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const user = storedUsers.find(user => user.email === email && user.password === password);
+
+            if (user) {
+                // If user exists, log them in and save the credentials
+                document.cookie = `token=${user.token}; path=/; expires=Sun, 1 January 2030 12:00:00 UTC;`;
+                document.cookie = `username=${email}; path=/; expires=Sun, 1 January 2030 12:00:00 UTC;`;
+
+                // Redirect to homepage after successful login
+                window.location.href = 'index.html';
+            } else {
+                errorMessage.textContent = 'Invalid email or password.';
+            }
+        }
+
+        function goToSignup() {
+            window.location.href = 'signup.html'; // Redirect to signup page
+        }
+    </script>
+</body>
+</html>

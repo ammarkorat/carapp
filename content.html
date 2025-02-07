@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Content - Car Enthusiasts Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <h1>Car Enthusiasts Hub</h1>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="news.html" class="nav-item">Car News</a>
+            <a href="meets.html" class="nav-item">Car Meets</a>
+            <a href="content.html" class="nav-item">Car Content</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Exclusive Car Content</h2>
+            <p>Explore in-depth reviews, tutorials, and videos to enhance your car knowledge.</p>
+        </section>
+
+        <section class="content-categories">
+            <button class="category-btn" onclick="filterContent('reviews')">Car Reviews</button>
+            <button class="category-btn" onclick="filterContent('tutorials')">Car Tutorials</button>
+            <button class="category-btn" onclick="filterContent('videos')">Car Videos</button>
+        </section>
+
+        <section class="content-list" id="content-list">
+            <!-- Content cards will be populated here -->
+        </section>
+    </main>
+
+    <footer>
+        <p>© <span id="current-year"></span> Ammar's Car App</p>
+    </footer>
+
+    <script>
+        // Mock data for car content
+        const carContent = [
+            {
+                title: "Top 10 Classic Car Reviews",
+                type: "reviews",
+                description: "A detailed review of the top 10 classic cars of all time.",
+                link: "#",  // You can link to a specific review page or video
+                content: "This article dives into the best classic cars ever made..."
+            },
+            {
+                title: "How to Maintain Your Sports Car",
+                type: "tutorials",
+                description: "Learn how to maintain your sports car to keep it running smoothly.",
+                link: "#",
+                content: "In this tutorial, we'll go through basic maintenance for your sports car..."
+            },
+            {
+                title: "Amazing Car Customization Video",
+                type: "videos",
+                description: "Watch a professional customizer modify a high-end sports car.",
+                link: "#",
+                content: '<iframe width="560" height="315" src="https://www.youtube.com/embed/your-video-id" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+            },
+            // More content...
+        ];
+
+        // Function to display content
+        function displayContent(content) {
+            const contentList = document.getElementById('content-list');
+            contentList.innerHTML = ''; // Clear existing content
+
+            content.forEach(item => {
+                const card = document.createElement('div');
+                card.classList.add('content-card');
+                card.innerHTML = `
+                    <h3>${item.title}</h3>
+                    <p>${item.description}</p>
+                    <a href="${item.link}" class="read-more-btn">Read More</a>
+                    <div class="content-detail">${item.content}</div>
+                `;
+                contentList.appendChild(card);
+            });
+        }
+
+        // Function to filter content based on category
+        function filterContent(category) {
+            const filteredContent = carContent.filter(item => item.type === category);
+            displayContent(filteredContent);
+        }
+
+        // Display all content by default
+        displayContent(carContent);
+
+        // Set the current year in the footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage News - Ammar News</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+        nav {
+            background-color: #002438;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        nav .nav-item {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1rem;
+        }
+        .container {
+            margin: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .news-section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .news-section h2 {
+            margin-bottom: 20px;
+        }
+        .post {
+            background-color: #fff;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .post h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .post .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .post .actions button {
+            background-color: #00509E;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .form-container input, .form-container textarea, .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Manage News - Ammar News</h1>
+</header>
+
+<nav>
+    <a href="admin.html" class="nav-item">Admin Dashboard</a>
+    <a href="admin_news.html" class="nav-item">Manage News</a>
+    <a href="admin_reports.html" class="nav-item">Reports</a>
+</nav>
+
+<div class="container">
+    <!-- Form for creating or editing a post -->
+    <div class="form-container">
+        <h2>Create/Edit Post</h2>
+        <form id="newsForm">
+            <input type="text" id="postTitle" placeholder="Enter post title" required>
+            <textarea id="postContent" placeholder="Enter post content" rows="5" required></textarea>
+            <input type="url" id="postImageURL" placeholder="Enter image URL" required>
+            <input type="date" id="postDate" required>
+            <button type="submit">Save Post</button>
+        </form>
+    </div>
+
+    <!-- News Posts Section -->
+    <div class="news-section">
+        <h2>All Posts</h2>
+        <div id="postsContainer"></div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 Ammar's Car App</p>
+</footer>
+
+<script>
+    let editingIndex = null; // To track if a post is being edited
+
+    // Function to load posts from localStorage
+    function loadPosts() {
+        const postsContainer = document.getElementById('postsContainer');
+        const news = JSON.parse(localStorage.getItem('news')) || [];
+
+        postsContainer.innerHTML = ''; // Clear previous posts
+
+        if (news.length === 0) {
+            postsContainer.innerHTML = '<p>No posts available.</p>';
+            return;
+        }
+
+        // Display each post
+        news.forEach((post, index) => {
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+            postElement.innerHTML = `
+                <h3>${post.title}</h3>
+                <p>${post.content}</p>
+                <img src="${post.imageURL}" alt="${post.title}">
+                <p><strong>Date:</strong> ${post.date}</p>
+                <div class="actions">
+                    <button onclick="editPost(${index})">Edit</button>
+                    <button onclick="deletePost(${index})">Delete</button>
+                </div>
+            `;
+            postsContainer.appendChild(postElement);
+        });
+    }
+
+    // Function to add or edit a post
+    document.getElementById('newsForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent page refresh on form submission
+
+        const title = document.getElementById('postTitle').value;
+        const content = document.getElementById('postContent').value;
+        const imageURL = document.getElementById('postImageURL').value;
+        const date = document.getElementById('postDate').value;
+
+        const newPost = {
+            title,
+            content,
+            imageURL,
+            date
+        };
+
+        const news = JSON.parse(localStorage.getItem('news')) || [];
+
+        if (editingIndex !== null) {
+            // Update existing post
+            news[editingIndex] = newPost;
+            editingIndex = null;
+        } else {
+            // Add new post
+            news.push(newPost);
+        }
+
+        // Save updated posts back to localStorage
+        localStorage.setItem('news', JSON.stringify(news));
+
+        // Clear form and reload posts
+        document.getElementById('newsForm').reset();
+        loadPosts();
+    });
+
+    // Function to delete a post
+    function deletePost(index) {
+        const news = JSON.parse(localStorage.getItem('news')) || [];
+        news.splice(index, 1); // Remove the post from the array
+
+        // Save the updated posts array to localStorage
+        localStorage.setItem('news', JSON.stringify(news));
+
+        // Reload the posts to update the display
+        loadPosts();
+    }
+
+    // Function to edit a post
+ // Function to edit a post
+function editPost(index) {
+    const news = JSON.parse(localStorage.getItem('news')) || [];
+    const post = news[index];
+
+    // Populate the form with the post's data
+    document.getElementById('postTitle').value = post.title;
+    document.getElementById('postContent').value = post.content;
+    document.getElementById('postImageURL').value = post.imageURL;
+    document.getElementById('postDate').value = post.date;
+
+    // Set the editing index
+    editingIndex = index;
+
+    // Delay the scroll to the top to ensure the form is populated first
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+    }, 100); // Delay by 100ms, adjust if necessary
+}
+
+
+
+    // Load posts when the page loads
+    window.onload = loadPosts;
+</script>
+
+</body>
+</html>

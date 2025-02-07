@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Visitors</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+        nav {
+            background-color: #002438;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        nav .nav-item {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1rem;
+        }
+        .container {
+            margin: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .stats-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .stats-section h2 {
+            margin-bottom: 20px;
+        }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .stat:last-child {
+            border-bottom: none;
+        }
+        footer {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Admin Dashboard - Visitors</h1>
+</header>
+
+<nav>
+    <a href="admin.html" class="nav-item">Admin Dashboard</a>
+    <a href="admin_news.html" class="nav-item">Manage News</a>
+    <a href="admin_reports.html" class="nav-item">Reports</a>
+</nav>
+
+<div class="container">
+    <div class="stats-section">
+        <h2>Visitor Statistics</h2>
+        <div class="stat">
+            <span>Visitors Today:</span>
+            <span id="todayVisitors">0</span>
+        </div>
+        <div class="stat">
+            <span>Visitors This Week:</span>
+            <span id="weekVisitors">0</span>
+        </div>
+        <div class="stat">
+            <span>Visitors This Month:</span>
+            <span id="monthVisitors">0</span>
+        </div>
+        <div class="stat">
+            <span>Visitors This Year:</span>
+            <span id="yearVisitors">0</span>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 Ammar's Car App</p>
+</footer>
+
+<script>
+    // Simulate visitor tracking
+    function trackVisitors() {
+        const currentDate = new Date();
+        const today = currentDate.toISOString().split('T')[0];
+        const week = `${currentDate.getFullYear()}-W${getWeekNumber(currentDate)}`;
+        const month = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+        const year = currentDate.getFullYear().toString();
+
+        const visitorData = JSON.parse(localStorage.getItem('visitorData')) || {};
+
+        // Increment visitor counts
+        visitorData[today] = (visitorData[today] || 0) + 1;
+        visitorData[week] = (visitorData[week] || 0) + 1;
+        visitorData[month] = (visitorData[month] || 0) + 1;
+        visitorData[year] = (visitorData[year] || 0) + 1;
+
+        localStorage.setItem('visitorData', JSON.stringify(visitorData));
+        updateVisitorStats(visitorData, today, week, month, year);
+    }
+
+    function updateVisitorStats(visitorData, today, week, month, year) {
+        document.getElementById('todayVisitors').textContent = visitorData[today] || 0;
+        document.getElementById('weekVisitors').textContent = visitorData[week] || 0;
+        document.getElementById('monthVisitors').textContent = visitorData[month] || 0;
+        document.getElementById('yearVisitors').textContent = visitorData[year] || 0;
+    }
+
+    function getWeekNumber(date) {
+        const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+        const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+    }
+
+    // Simulate a visitor arriving
+    window.onload = trackVisitors;
+</script>
+
+</body>
+</html>

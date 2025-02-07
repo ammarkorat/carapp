@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Reports - Ammar News</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #002438;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+        nav {
+            background-color: #002438;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        nav .nav-item {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1rem;
+        }
+        .container {
+            margin: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .report-section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .report {
+            background-color: #fff;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .report h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .report .email {
+            font-size: 1.1rem;
+            color: #00509E;
+        }
+        .report .content {
+            margin-top: 10px;
+        }
+        .report .date {
+            font-size: 0.9rem;
+            color: gray;
+        }
+        .actions button {
+            background-color: #E03C31;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Check Reports - Ammar News</h1>
+</header>
+
+<nav>
+    <a href="admin.html" class="nav-item">Admin Dashboard</a>
+    <a href="admin_news.html" class="nav-item">Manage News</a>
+    <a href="admin_reports.html" class="nav-item">Check Reports</a>
+</nav>
+
+<div class="container">
+    <!-- Reports Section -->
+    <div class="report-section">
+        <h2>All Reports</h2>
+        <div id="reportsContainer"></div>
+    </div>
+</div>
+
+<script>
+    // Function to load reports from localStorage
+    function loadReports() {
+        const reportsContainer = document.getElementById('reportsContainer');
+        const reports = JSON.parse(localStorage.getItem('reports')) || [];
+
+        reportsContainer.innerHTML = ''; // Clear previous reports
+
+        if (reports.length === 0) {
+            reportsContainer.innerHTML = '<p>No reports available.</p>';
+            return;
+        }
+
+        // Display each report
+        reports.forEach((report, index) => {
+            const reportElement = document.createElement('div');
+            reportElement.classList.add('report');
+            reportElement.innerHTML = `
+                <h3>Report #${index + 1}</h3>
+                <p class="email">Email: ${report.email}</p>
+                <p class="content">${report.content}</p>
+                <p class="date">Date Submitted: ${report.date}</p>
+                <div class="actions">
+                    <button onclick="deleteReport(${index})">Delete Report</button>
+                </div>
+            `;
+            reportsContainer.appendChild(reportElement);
+        });
+    }
+
+    // Function to delete a report
+    function deleteReport(index) {
+        const reports = JSON.parse(localStorage.getItem('reports')) || [];
+        reports.splice(index, 1); // Remove the report from the array
+
+        // Save the updated reports array back to localStorage
+        localStorage.setItem('reports', JSON.stringify(reports));
+
+        // Reload the reports to update the display
+        loadReports();
+    }
+
+    // Load reports when the page loads
+    window.onload = loadReports;
+</script>
+
+</body>
+</html>

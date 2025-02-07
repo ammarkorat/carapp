@@ -1,0 +1,76 @@
+import pandas as pd
+
+# Load the CSV file into a pandas DataFrame
+file_path = 'C:\Users\LOQ\Desktop\Ammar\work\App'  # Replace with your actual file path
+data = pd.read_csv(file_path)
+
+# Display the first few rows to understand the data
+print("Loaded data:")
+print(data.head())
+
+# Rename columns for clarity (if necessary)
+# Adjust the column names based on your CSV file's actual structure
+data = data.rename(columns={'make_column_name': 'Make', 'model_column_name': 'Model'})  # Adjust column names
+
+# Filter relevant columns (Make and Model)
+filtered_data = data[['Make', 'Model']]
+
+# List of known supercar brands
+supercar_brands = ['Ferrari', 'Lamborghini', 'McLaren', 'Porsche', 'Bugatti', 'Aston Martin', 
+                   'Maserati', 'Pagani', 'Koenigsegg', 'Bentley']
+
+# Create a new column to classify if the car is a supercar
+filtered_data['Is_Supercar'] = filtered_data['Make'].apply(lambda x: 'Yes' if x in supercar_brands else 'No')
+
+# Show the updated data with the new classification
+print("\nFiltered data with supercar classification:")
+print(filtered_data.head())
+
+# Filter only supercars
+supercars = filtered_data[filtered_data['Is_Supercar'] == 'Yes']
+
+# Show the supercars
+print("\nSupercars:")
+print(supercars)
+
+# Now, you can integrate the supercars with your news-fetching logic.
+# Example code to fetch news related to the supercars:
+
+import requests
+
+# Function to fetch news related to supercars
+def fetch_supercar_news(supercars):
+    # Replace with your actual News API endpoint and key
+    api_key = '0da280d80ef24c2d96b31dab5290838d'  # Replace with your News API key
+    url = 'https://newsapi.org/v2/everything'
+
+    for _, row in supercars.iterrows():
+        car_make = row['Make']
+        query = car_make  # Using the car make as the search query
+        print(f"Fetching news for {car_make}...")
+
+        # Request news articles
+        response = requests.get(url, params={
+            'q': query,
+            'apiKey': api_key,
+            'language': 'en',
+            'pageSize': 5  # Limit the number of articles
+        })
+
+        if response.status_code == 200:
+            news = response.json()
+            articles = news.get('articles', [])
+            if articles:
+                print(f"News for {car_make}:")
+                for article in articles:
+                    print(f"Title: {article['title']}")
+                    print(f"Description: {article['description']}")
+                    print(f"URL: {article['url']}")
+                    print("-" * 50)
+            else:
+                print(f"No news found for {car_make}.")
+        else:
+            print(f"Failed to fetch news for {car_make}.")
+
+# Call the function to fetch news related to the supercars
+fetch_supercar_news(supercars)
